@@ -1,15 +1,26 @@
 """
 Training and evaluation engine for Quantum and Classical Transformer models.
 Provides unified training loops, validation routines, metric collection,
-and perplexity computation.
+perplexity computation, and model checkpointing.
 """
 
+import os
+import re
 import time
 import math
+from pathlib import Path
 from typing import Dict, Any, List
 import torch
 import torch.nn as nn
 from dataset import ShakespeareDataModule
+
+# Shared checkpoint directory (sibling to this script)
+CHECKPOINT_DIR = Path(__file__).parent / "checkpoints"
+
+
+def _safe_filename(name: str) -> str:
+    """Converts a model name string to a safe filename stem."""
+    return re.sub(r"[^\w\-]", "_", name).strip("_")
 
 
 def count_trainable_parameters(model: nn.Module) -> int:
@@ -102,6 +113,23 @@ def train_model(
     print(f"  Final Val Loss:   {final_val_loss:.4f}")
     print(f"  Perplexity (PPL): {perplexity:.2f}")
 
+    # ── Checkpoint: save state_dict so generate.py can reload any model ──
+    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
+    ckpt_stem = _safe_filename(model_name)
+    ckpt_path = CHECKPOINT_DIR / f"{ckpt_stem}.pt"
+    torch.save(
+        {
+            "model_class": model.__class__.__name__,
+            "model_name": model_name,
+            "state_dict": model.state_dict(),
+            "vocab_size": data_module.vocab_size,
+            "val_loss": round(final_val_loss, 4),
+            "perplexity": round(perplexity, 4),
+        },
+        ckpt_path,
+    )
+    print(f"  [Checkpoint] Saved → {ckpt_path}")
+
     return {
         "model_name": model_name,
         "trainable_params": count_trainable_parameters(model),
@@ -109,6 +137,7 @@ def train_model(
         "final_train_loss": round(final_train_loss, 4),
         "val_loss": round(final_val_loss, 4),
         "perplexity": round(perplexity, 4),
+        "checkpoint": str(ckpt_path),
         "history": {
             "train_loss": train_loss_history,
             "val_loss": val_loss_history

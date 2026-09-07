@@ -83,6 +83,17 @@ class ShakespeareDataModule:
         self.val_data = encoded_data[n:]
         print(f"[Dataset] Vocab size: {self.vocab_size} | Train tokens: {len(self.train_data)} | Val tokens: {len(self.val_data)}")
 
+    # Convenience accessors so external scripts don't reach into .tokenizer
+    @property
+    def stoi(self):
+        """Character-to-index mapping (char -> int)."""
+        return self.tokenizer.stoi
+
+    @property
+    def itos(self):
+        """Index-to-character mapping (int -> char)."""
+        return self.tokenizer.itos
+
     def get_batch(self, split: str = "train") -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Returns a causal next-token batch (X, Y) where Y is shifted by 1 relative to X.
