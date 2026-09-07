@@ -1,11 +1,21 @@
 Qubits,Hilbert_Dim,Type,Model,Train_Loss,Val_Loss,Perplexity,Trainable_Params,Runtime_Seconds
-2,4,Classical,Model A (Dim=2),3.3686,3.4579,31.7504,8496,0.54
-2,4,Quantum,Model B (2 Qubits),3.3108,3.501,33.1489,8504,2.04
-4,16,Classical,Model A (Dim=4),3.2066,3.2444,25.6459,8678,0.54
-4,16,Quantum,Model B (4 Qubits),3.2455,3.3946,29.8031,8694,3.4
-6,64,Classical,Model A (Dim=6),3.2118,3.247,25.7134,8860,0.57
-6,64,Quantum,Model B (6 Qubits),3.0543,3.2175,24.9667,8884,7.19
-8,256,Classical,Model A (Dim=8),3.022,3.1634,23.652,9042,0.5
-8,256,Quantum,Model B (8 Qubits),3.2261,3.318,27.6045,9074,21.8
-10,1024,Classical,Model A (Dim=10),2.8345,3.0413,20.9321,9224,0.51
-10,1024,Quantum,Model B (10 Qubits),2.9197,3.2184,24.9882,9264,52.64
+2,4,Classical,Model A (Classical Baseline - Dim 2),3.3686,3.4579,31.7504,8496,0.58
+2,4,Ideal Quantum,Model B (Hybrid Quantum Transformer - 2 Qubits),3.3319,3.4432,31.2856,8504,2.03
+2,4,Decoherence,Model C (Decoherence std=0.05 - 2 Qubits),3.3809,3.4198,30.5633,8504,1.88
+2,4,Physical QPU,Model D (Qiskit Aer FakeBrisbane - 2 Qubits),3.3072,3.5275,34.0384,8512,117.82
+4,16,Classical,Model A (Classical Baseline - Dim 4),3.2644,3.3232,27.7496,8678,0.61
+4,16,Ideal Quantum,Model B (Hybrid Quantum Transformer - 4 Qubits),3.2144,3.3572,28.7085,8694,3.8
+4,16,Decoherence,Model C (Decoherence std=0.05 - 4 Qubits),3.2738,3.388,29.6059,8694,3.68
+4,16,Physical QPU,Model D (Qiskit Aer FakeBrisbane - 4 Qubits),3.2437,3.3727,29.1584,8710,126.2
+6,64,Classical,Model A (Classical Baseline - Dim 6),3.0417,3.3174,27.5894,8860,0.61
+6,64,Ideal Quantum,Model B (Hybrid Quantum Transformer - 6 Qubits),3.0497,3.3016,27.1554,8884,8.24
+6,64,Decoherence,Model C (Decoherence std=0.05 - 6 Qubits),3.3463,3.3902,29.6722,8884,8.49
+6,64,Physical QPU,Model D (Qiskit Aer FakeBrisbane - 6 Qubits),3.3031,3.2971,27.0348,8908,141.53
+8,256,Classical,Model A (Classical Baseline - Dim 8),3.0417,3.1197,22.6389,9042,0.6
+8,256,Ideal Quantum,Model B (Hybrid Quantum Transformer - 8 Qubits),3.1495,3.2973,27.0398,9074,26.29
+8,256,Decoherence,Model C (Decoherence std=0.05 - 8 Qubits),3.1077,3.1387,23.0736,9074,26.56
+8,256,Physical QPU,Model D (Qiskit Aer FakeBrisbane - 8 Qubits),3.0334,3.1802,24.051,9106,156.5
+10,1024,Classical,Model A (Classical Baseline - Dim 10),2.8606,3.0323,20.7447,9224,0.58
+10,1024,Ideal Quantum,Model B (Hybrid Quantum Transformer - 10 Qubits),3.47,3.5107,33.471,9264,55.84
+10,1024,Decoherence,Model C (Decoherence std=0.05 - 10 Qubits),3.2224,3.2984,27.0693,9264,56.05
+10,1024,Physical QPU,Model D (Qiskit Aer FakeBrisbane - 10 Qubits),2.9893,3.1848,24.1625,9304,177.91
