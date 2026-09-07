@@ -1,0 +1,11 @@
+Qubits,Hilbert_Dim,Type,Model,Train_Loss,Val_Loss,Perplexity,Trainable_Params,Runtime_Seconds
+2,4,Classical,Model A (Dim=2),3.3686,3.4579,31.7504,8496,0.54
+2,4,Quantum,Model B (2 Qubits),3.3108,3.501,33.1489,8504,2.04
+4,16,Classical,Model A (Dim=4),3.2066,3.2444,25.6459,8678,0.54
+4,16,Quantum,Model B (4 Qubits),3.2455,3.3946,29.8031,8694,3.4
+6,64,Classical,Model A (Dim=6),3.2118,3.247,25.7134,8860,0.57
+6,64,Quantum,Model B (6 Qubits),3.0543,3.2175,24.9667,8884,7.19
+8,256,Classical,Model A (Dim=8),3.022,3.1634,23.652,9042,0.5
+8,256,Quantum,Model B (8 Qubits),3.2261,3.318,27.6045,9074,21.8
+10,1024,Classical,Model A (Dim=10),2.8345,3.0413,20.9321,9224,0.51
+10,1024,Quantum,Model B (10 Qubits),2.9197,3.2184,24.9882,9264,52.64
