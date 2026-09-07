@@ -1,5 +1,5 @@
 Model,Train_Loss,Val_Loss,Perplexity,Trainable_Params,Runtime_Seconds
-Model A (Classical Baseline),2.9284,3.0278,20.6524,9224,0.64
-Model B (Hybrid Quantum Transformer - Ideal VQC),3.3481,3.3126,27.4553,9264,62.03
-Model C (Hybrid Quantum Transformer - Decoherence Simulated std=0.05),3.4814,3.5317,34.1829,9264,67.41
-Model D (Hybrid Quantum Transformer - Qiskit Aer FakeBrisbane QPU Simulation),3.1072,3.3638,28.8981,9304,224.78
+Model A (Classical Baseline - Dim 10),2.9284,3.0278,20.6524,9224,0.57
+Model B (Hybrid Quantum Transformer - 10 Qubits),3.3481,3.3126,27.4553,9264,56.35
+Model C (Decoherence std=0.05 - 10 Qubits),3.4814,3.5317,34.1829,9264,55.54
+Model D (Qiskit Aer FakeBrisbane - 10 Qubits),3.1083,3.3667,28.9815,9304,198.05

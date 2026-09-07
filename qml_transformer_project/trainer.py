@@ -128,7 +128,7 @@ def train_model(
         },
         ckpt_path,
     )
-    print(f"  [Checkpoint] Saved → {ckpt_path}")
+    print(f"  [Checkpoint] Saved -> {ckpt_path}")
 
     return {
         "model_name": model_name,
