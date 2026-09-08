@@ -52,21 +52,24 @@ def plot_scaling_analysis(df: pd.DataFrame, save_path: str):
         "Ideal Quantum": "#2ca02c", # Green
         "Decoherence": "#ff7f0e",   # Orange
         "Physical QPU": "#9467bd",  # Purple
+        "Real QPU": "#d62728",      # Red — Model E (real IBM hardware)
     }
     markers = {
         "Classical": "s",
         "Ideal Quantum": "o",
         "Decoherence": "^",
         "Physical QPU": "D",
+        "Real QPU": "*",
     }
     styles = {
         "Classical": "--",
         "Ideal Quantum": "-",
         "Decoherence": "-.",
         "Physical QPU": ":",
+        "Real QPU": (0, (3, 1, 1, 1)),  # dense dash-dot
     }
 
-    model_types = ["Classical", "Ideal Quantum", "Physical QPU", "Decoherence"]
+    model_types = ["Classical", "Ideal Quantum", "Physical QPU", "Decoherence", "Real QPU"]
 
     # Panel 1: Perplexity vs Qubits
     ax1 = axes[0, 0]
@@ -137,16 +140,30 @@ def plot_scaling_analysis(df: pd.DataFrame, save_path: str):
     # Compute the Perplexity difference between Ideal and Noisy models
     q_ideal = df[df["Type"] == "Ideal Quantum"].set_index("Qubits")["Perplexity"]
     q_decoh = df[df["Type"] == "Decoherence"].set_index("Qubits")["Perplexity"]
-    q_qpu = df[df["Type"] == "Physical QPU"].set_index("Qubits")["Perplexity"]
+    q_qpu   = df[df["Type"] == "Physical QPU"].set_index("Qubits")["Perplexity"]
+    q_real  = df[df["Type"] == "Real QPU"].set_index("Qubits")["Perplexity"]
 
     common_q = [q for q in qubits if q in q_ideal.index and q in q_decoh.index and q in q_qpu.index]
     if common_q:
         decoh_gap = [q_decoh.loc[q] - q_ideal.loc[q] for q in common_q]
-        qpu_gap = [q_qpu.loc[q] - q_ideal.loc[q] for q in common_q]
+        qpu_gap   = [q_qpu.loc[q]   - q_ideal.loc[q] for q in common_q]
 
-        bar_w = 0.35
-        ax4.bar(np.array(common_q) - bar_w/2, decoh_gap, width=bar_w, color=colors["Decoherence"], alpha=0.85, edgecolor="#222", label="Gaussian Decoherence Penalty (+Δ PPL)")
-        ax4.bar(np.array(common_q) + bar_w/2, qpu_gap, width=bar_w, color=colors["Physical QPU"], alpha=0.85, edgecolor="#222", label="IBM Brisbane QPU Noise Penalty (+Δ PPL)")
+        bar_w = 0.25
+        ax4.bar(np.array(common_q) - bar_w, decoh_gap, width=bar_w,
+                color=colors["Decoherence"], alpha=0.85, edgecolor="#222",
+                label="Gaussian Decoherence Penalty (+Δ PPL)")
+        ax4.bar(np.array(common_q),          qpu_gap,   width=bar_w,
+                color=colors["Physical QPU"], alpha=0.85, edgecolor="#222",
+                label="IBM Brisbane QPU Noise Penalty (+Δ PPL)")
+
+    # Overlay Real QPU bar at N=10 if Model E results are present
+    real_common = [q for q in [10] if q in q_ideal.index and q in q_real.index]
+    if real_common:
+        real_gap = [q_real.loc[q] - q_ideal.loc[q] for q in real_common]
+        bar_w    = 0.25
+        ax4.bar(np.array(real_common) + bar_w, real_gap, width=bar_w,
+                color=colors["Real QPU"], alpha=0.85, edgecolor="#222",
+                label="Real IBM QPU Noise Penalty (+Δ PPL) [Model E]")
 
         ax4.set_title("Noise Penalty over Ideal VQC (+Δ Perplexity)", fontsize=12, fontweight="bold", pad=10)
         ax4.set_xlabel("Number of Qubits (N)", fontsize=11)
@@ -223,11 +240,29 @@ def run_full_scaling_study(qubit_counts=[2, 4, 6, 8, 10], steps=150, lr=0.003):
     df.to_csv(csv_root, index=False)
     print(f"\n[Artifact] Saved 4-model scaling data to:\n  - {csv_local}\n  - {csv_root}")
 
+    # Merge Model E (Real IBM QPU) 10-qubit row if present
+    model_e_csv = os.path.join(script_dir, "ibm_model_e_results", "model_e_real_qpu_statistics.csv")
+    if os.path.exists(model_e_csv):
+        print("\n[Model E] Real IBM QPU results found -- merging into qubit_scaling_data.csv")
+        df_e_raw = pd.read_csv(model_e_csv)
+        scaling_cols = ["Qubits", "Hilbert_Dim", "Type", "Model", "Train_Loss",
+                        "Val_Loss", "Perplexity", "Trainable_Params", "Runtime_Seconds"]
+        df_e = df_e_raw[[c for c in scaling_cols if c in df_e_raw.columns]].copy()
+        # Remove any pre-existing Real QPU N=10 row to avoid duplicates
+        df_base = df[~((df["Type"] == "Real QPU") & (df["Qubits"] == 10))]
+        df = pd.concat([df_base, df_e], ignore_index=True)
+        df.to_csv(csv_local, index=False)
+        df.to_csv(csv_root, index=False)
+        print(df[["Qubits", "Type", "Val_Loss", "Perplexity"]].to_string(index=False))
+    else:
+        print("\n[Model E] No ibm_model_e_results/model_e_real_qpu_statistics.csv found.")
+        print("          Run model_e_runner.py to add real IBM QPU results at N=10.")
+
     png_local = os.path.join(script_dir, "qubit_scaling_analysis.png")
     png_root = os.path.join(workspace_root, "qubit_scaling_analysis.png")
     plot_scaling_analysis(df, png_local)
     shutil.copyfile(png_local, png_root)
-    print(f"[Artifact] Saved 4-model scaling figure to:\n  - {png_local}\n  - {png_root}")
+    print(f"[Artifact] Saved scaling figure to:\n  - {png_local}\n  - {png_root}")
 
     return df
 

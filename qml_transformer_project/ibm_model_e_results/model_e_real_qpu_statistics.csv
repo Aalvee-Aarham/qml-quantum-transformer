@@ -1,0 +1,2 @@
+Qubits,Hilbert_Dim,Type,Model,Train_Loss,Val_Loss,Perplexity,Trainable_Params,Runtime_Seconds,Backend,Backend_Physical_Qubits,Shots,Resilience_Level,Train_Batches,Val_Batches,Checkpoint,Transpile_Seconds,QPU_Jobs,Evaluation_Mode
+10,1024,Real QPU,Model E (Real IBM Quantum QPU - 10 Qubits),3.5572,3.5527,34.9058,9264,307.63,ibm_marrakesh,156,128,0,5,10,C:\Users\User\Downloads\qnlp\qml_transformer_project\checkpoints\Model_D__Qiskit_Aer_FakeBrisbane_-_10_Qubits.pt,0.034,15,Frozen trained Model D evaluated on real QPU (not gradient-trained on hardware)

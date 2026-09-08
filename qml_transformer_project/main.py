@@ -52,6 +52,7 @@ def plot_thesis_curves(results: list, save_path: str):
         "Model B": "#2ca02c",  # Quantum Green
         "Model C": "#ff7f0e",  # Decoherence Orange
         "Model D": "#9467bd",  # Hardware Violet
+        "Model E": "#d62728",  # Real IBM QPU Red
     }
 
     # Helper label resolver
@@ -146,7 +147,7 @@ def plot_thesis_curves(results: list, save_path: str):
 
 def main():
     print("\n" + "#" * 80)
-    print("  QUANTUM-CLASSICAL TRANSFORMER BENCHMARK: THESIS EXPERIMENTAL SUITE  ")
+    print("  QUANTUM-CLASSICAL TRANSFORMER BENCHMARK: EXPERIMENTAL SUITE  ")
     print("#" * 80)
 
     # 1. Reproducibility seed & Data Loading
@@ -209,6 +210,26 @@ def main():
     df_summary.to_csv(csv_local, index=False)
     df_summary.to_csv(csv_root, index=False)
     print(f"[Artifact] Exported quantitative metrics to:\n  - {csv_local}\n  - {csv_root}")
+
+    # 4b. Merge Model E (Real IBM QPU) results if they exist
+    model_e_csv = os.path.join(script_dir, "ibm_model_e_results", "model_e_real_qpu_statistics.csv")
+    if os.path.exists(model_e_csv):
+        print("\n[Model E] Real IBM QPU results found -- merging into thesis_data_collection.csv")
+        df_e_raw = pd.read_csv(model_e_csv)
+        thesis_cols = ["Model", "Train_Loss", "Val_Loss", "Perplexity",
+                       "Trainable_Params", "Runtime_Seconds"]
+        df_e = df_e_raw[[c for c in thesis_cols if c in df_e_raw.columns]].copy()
+        # Remove any pre-existing Model E row so re-runs don't duplicate
+        df_base = df_summary[~df_summary["Model"].str.contains("Model E", na=False)]
+        df_combined = pd.concat([df_base, df_e], ignore_index=True)
+        df_combined.to_csv(csv_local, index=False)
+        df_combined.to_csv(csv_root, index=False)
+        results_for_plot = results  # step-level history only available for A-D
+        print(df_combined[["Model", "Val_Loss", "Perplexity"]].to_string(index=False))
+    else:
+        print("\n[Model E] No ibm_model_e_results/model_e_real_qpu_statistics.csv found.")
+        print("          Run model_e_runner.py after a successful IBM QPU session to include")
+        print("          real hardware results in the experiment CSV and graphs.")
 
     # 5. Generate and export publication-grade graph
     png_local = os.path.join(script_dir, "thesis_loss_curves.png")

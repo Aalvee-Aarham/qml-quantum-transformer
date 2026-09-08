@@ -1,0 +1,71 @@
+{
+  "backend": "ibm_marrakesh",
+  "physical_qubits": 156,
+  "logical_qubits": 10,
+  "hilbert_dimension": 1024,
+  "depth": 2,
+  "shots": 128,
+  "resilience_level": 0,
+  "train_losses_per_batch": [
+    3.5767152309417725,
+    3.594635009765625,
+    3.588125228881836,
+    3.4871885776519775,
+    3.5391628742218018
+  ],
+  "validation_losses_per_batch": [
+    3.5759871006011963,
+    3.466637134552002,
+    3.556837320327759,
+    3.590989589691162,
+    3.673177719116211,
+    3.5692336559295654,
+    3.4934840202331543,
+    3.494020938873291,
+    3.5514659881591797,
+    3.5546858310699463
+  ],
+  "train_job_ids": [
+    "dafl6jm42tqs73b03d50",
+    "dafl6ol1ierc738ngrgg",
+    "dafl6tbdd5gc73d9vqr0",
+    "dafl7251ierc738ngru0",
+    "dafl76u42tqs73b03dp0"
+  ],
+  "validation_job_ids": [
+    "dafl7bjdd5gc73d9vrb0",
+    "dafl7glnj4cs73aggsf0",
+    "dafl7prdd5gc73d9vrqg",
+    "dafl7um42tqs73b03eng",
+    "dafl83e42tqs73b03esg",
+    "dafl88bdd5gc73d9vsc0",
+    "dafl8de42tqs73b03f7g",
+    "dafl8i642tqs73b03fdg",
+    "dafl8mtnj4cs73aggtmg",
+    "dafl8rjdd5gc73d9vt1g"
+  ],
+  "train_batch_wall_times": [
+    19.829977800138295,
+    19.108135899994522,
+    18.664346099831164,
+    19.1481075999327,
+    19.185420100111514
+  ],
+  "validation_batch_wall_times": [
+    19.686943399952725,
+    36.647192399948835,
+    19.19287969986908,
+    19.144645400112495,
+    19.453398100100458,
+    19.786985100014135,
+    19.075826599961147,
+    19.13923229998909,
+    18.86316950013861,
+    19.1492886999622
+  ],
+  "total_runtime_seconds": 307.62932990002446,
+  "transpile_seconds": 0.03376260004006326,
+  "checkpoint": "C:\\Users\\User\\Downloads\\qnlp\\qml_transformer_project\\checkpoints\\Model_D__Qiskit_Aer_FakeBrisbane_-_10_Qubits.pt",
+  "model_name": "Model E (Real IBM Quantum QPU - 10 Qubits)",
+  "note": "Train_Loss/Val_Loss are hardware-evaluated losses of a fixed, previously trained Model D (used as Model E). This script does not perform end-to-end gradient training on real hardware."
+}

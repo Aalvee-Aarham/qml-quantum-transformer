@@ -19,3 +19,4 @@ Qubits,Hilbert_Dim,Type,Model,Train_Loss,Val_Loss,Perplexity,Trainable_Params,Ru
 10,1024,Ideal Quantum,Model B (Hybrid Quantum Transformer - 10 Qubits),3.47,3.5107,33.471,9264,55.84
 10,1024,Decoherence,Model C (Decoherence std=0.05 - 10 Qubits),3.2224,3.2984,27.0693,9264,56.05
 10,1024,Physical QPU,Model D (Qiskit Aer FakeBrisbane - 10 Qubits),2.9893,3.1848,24.1625,9304,177.91
+10,1024,Real QPU,Model E (Real IBM Quantum QPU - 10 Qubits),3.5572,3.5527,34.9058,9264,307.63
